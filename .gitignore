@@ -367,3 +367,4 @@ FodyWeavers.xsd
 # Manually Set
 node_modules
 .env
+config.json
