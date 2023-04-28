@@ -5,17 +5,30 @@ module.exports = {
 		.setName('startgame')
 		.setDescription('Starts game of TicTacToe'),
 	async execute(interaction) {
-		const test = new ButtonBuilder()
+
+		const embed = {
+			title: 'Test',
+			description: 'E',
+		};
+
+		/*const row = {
+			CustomId: 'test',
+			Label: 'Test Button',
+			Style: ButtonStyle.Secondary,
+		};*/
+
+		const testButton = new ButtonBuilder()
 			.setCustomId('test')
-			.setLabel('TestButton')
+			.setLabel('Test Button')
 			.setStyle(ButtonStyle.Primary);
 
-		const buttons = new ActionRowBuilder()
-			.addComponents(test);
+		const row = new ActionRowBuilder()
+			.addComponents(testButton);
 
 		await interaction.reply({
-			content: `Test`,
-			components: [buttons],
-			});
+			content: 'testMessage',
+			embeds: [embed],
+			components: [row],
+		});
 	},
 };
