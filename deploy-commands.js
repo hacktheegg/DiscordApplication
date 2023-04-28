@@ -1,4 +1,4 @@
-const { REST, Routes } = require('discord.js');
+/*const { REST, Routes } = require('discord.js');
 const { token, clientId, guildId } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -43,4 +43,49 @@ const rest = new REST().setToken(token);
 		// And of course, make sure you catch and log any errors!
 		console.error(error);
 	}
-})();
+})();*/
+
+
+
+const { REST, Routes } = require('discord.js');
+const { token, clientId, guildId } = require('./config.json');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const commands = [];
+
+function readCommands(commandsPath) {
+	// Get all the files and subdirectories in the current directory
+	const files = fs.readdirSync(commandsPath);
+
+	for (const file of files) {
+		const filePath = path.join(commandsPath, file);
+		const stat = fs.statSync(filePath);
+
+		if (stat.isDirectory()) {
+			// If the file is a directory, recursively read its contents
+			readCommands(filePath);
+
+		} else if (file.endsWith('.js')) {
+			// If the file is a JavaScript file, load its command data
+			const command = require(filePath);
+
+			if ('data' in command && 'execute' in command) {
+				commands.push(command.data.toJSON());
+
+			} else {
+				console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+			}
+		}
+	}
+}
+
+const commandsPath = path.join(__dirname, 'commands');
+readCommands(commandsPath);
+
+// Deploy the slash commands to the Discord bot using the REST module and Routes object
+const rest = new REST({ version: '9' }).setToken(token);
+
+rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+	.then(() => console.log('Successfully registered slash commands!'))
+	.catch(console.error);
