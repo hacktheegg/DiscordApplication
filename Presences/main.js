@@ -1,5 +1,5 @@
 const { Client, Events, GatewayIntentBits } = require('discord.js');
-const { token, clientId } = require('./config.json');
+const { token, clientId } = require('./../config.json');
 const DiscordRPC = require('discord-rpc');
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 
