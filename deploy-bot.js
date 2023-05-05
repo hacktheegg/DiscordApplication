@@ -10,7 +10,7 @@ const commandsPath = path.join(__dirname, 'commands');
 readCommands(commandsPath, client.commands);
 
 client.once(Events.ClientReady, () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+	console.log(`Logged in as ${client.user.tag}! (As Bot)`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
